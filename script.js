@@ -244,8 +244,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const currentSrc = (music.getAttribute("src") || "").toLowerCase();
-    if (currentSrc !== "timeless.mp3") {
-      music.src = "timeless.mp3";
+    if (currentSrc !== "Sao-Paulo.mp3") {
+      music.src = "Sao-Paulo.mp3";
       music.load();
     }
 
