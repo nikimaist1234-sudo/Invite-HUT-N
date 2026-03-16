@@ -267,8 +267,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const currentSrc = (friendResultAudio.getAttribute("src") || "").toLowerCase();
-    if (currentSrc !== "whistle.mp3") {
-      friendResultAudio.src = "Whistle.mp3";
+    if (currentSrc !== "Slow-Motion.mp3") {
+      friendResultAudio.src = "Slow-Motion.mp3";
       friendResultAudio.load();
     }
 
