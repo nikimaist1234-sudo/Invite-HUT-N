@@ -487,16 +487,15 @@ document.addEventListener("DOMContentLoaded", () => {
       friendQuizNextBtn.textContent = "Continue";
       
       // Create dig deeper display
-      const digDeeperDiv = document.getElementById("digDeeperText");
+      let digDeeperDiv = document.getElementById("digDeeperText");
       if (!digDeeperDiv) {
-        const newDiv = document.createElement("div");
-        newDiv.id = "digDeeperText";
-        newDiv.className = "dig-deeper-text";
-        newDiv.innerHTML = "Time to dig deeper into your brain, lets see how well you really know me Sister Navika-Probably really well";
-        friendQuizQuestion.parentNode.insertBefore(newDiv, friendQuizQuestion);
-      } else {
-        digDeeperDiv.style.display = "block";
+        digDeeperDiv = document.createElement("div");
+        digDeeperDiv.id = "digDeeperText";
+        digDeeperDiv.className = "dig-deeper-text";
+        friendQuizQuestion.parentNode.insertBefore(digDeeperDiv, friendQuizQuestion);
       }
+      digDeeperDiv.innerHTML = "Time to dig deeper into your brain, lets see how well you really know me Sister Navika-Probably really well";
+      digDeeperDiv.style.display = "block";
       return;
     }
 
@@ -575,9 +574,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function submitFriendQuizAnswer() {
-    // Handle dig deeper interstitial
+    // Handle dig deeper interstitial - when showing dig deeper, just hide it and advance
     if (showDigDeeper) {
       showDigDeeper = false;
+      // We already processed question 10 (index 9), so now move to question 11 (index 10)
+      friendQuizIndex = 10;
       renderFriendQuizQuestion();
       return;
     }
