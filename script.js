@@ -46,6 +46,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const resultAudio = document.getElementById("resultAudio");
   const quizNameInput = document.getElementById("quizName");
 
+  // Variable to store Sao-Paulo.mp3 pause time
+  let saoPauloPauseTime = 0;
+
   // Lyrics game levels - 8 levels with Weeknd lyrics
   const lyricsLevels = [
     { 
@@ -100,20 +103,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const friendQuizQuestions = [
     {
-      question: "When did I first meet you.",
-      answers: ["year 1 block 2", "i met you in year 1 block 2", "block 2 of your first year", "first year block 2", "year one block two"]
+      question: "When did I first meet you?",
+      answers: ["year 1 block 2", "year 1, block 2", "year one block two", "block 2 of year 1", "first year block 2", "year 1, block 2"]
     },
     {
-      question: "Which artist will forever be my number 1 artist.",
-      answers: ["the weeknd", "weeknd", "abel tesfaye", "abel"]
+      question: "Which song by the weeknd is my anthem? You have videos of me singing this song.",
+      answers: ["or nah", "the song is or nah", "ornah", "Or Nah"]
     },
     {
-      question: "Whats my go-to alcoholic drink?",
-      answers: ["savanna dry", "savanna", "savannah dry"]
+      question: "What alcohol did I get drunk from when we had a sleepover",
+      answers: ["rum", "southern comfort", "the southen comfort"]
     },
     {
-      question: "Which movie genre do I hate the most",
-      answers: ["horror", "horror movies", "scary movies"]
+      question: "What big collection do I have displayed in my room on my shelf?",
+      answers: ["energy drink collection", "energy drinks", "energy drink", "my energy drink collection", "energy drinks collection"]
     },
     {
       question: "Which member of Blackpink is my bias?",
@@ -121,33 +124,40 @@ document.addEventListener("DOMContentLoaded", () => {
       answers: ["jisoo", "kim jisoo"]
     },
     {
-      question: "Which artist's music did you introduce me to",
-      answers: ["don toliver", "don", "Don Toliver"]
+      question: "Which artist's music did you introduce me to?",
+      answers: ["don toliver", "don", "toliver"]
     },
     {
-      question: "Whats our go to saying that started from a whatsapp sticker.",
-      answers: ["you hate me", "the sticker that says you hate me", "you hate me is it because I'm ugly","you hate me is it because im ugly", "You hate me, is it because im ugly", "you hate me?"]
+      question: "What's our go to saying that started from a whatsapp sticker?",
+      answers: ["you hate me", "the sticker that says you hate me", "you hate me is it because i'm ugly", "you hate me is it because im ugly", "you hate me, is it because im ugly", "you hate me?"]
     },
     {
-      question: "What was the first thai show you and I watched together",
-      answers: ["pluto", "pluto the series", "the series pluto"]
+      question: "What's my favorite animal?",
+      answers: ["shark", "a shark", "sharks"]
     },
     {
-      extra: "Time to dig deeper into your brain, lets see how well you really know me Sister Navika-Probably really well",
-      question: "How many ex's/situationships have I had.",
+      question: "What's my favorite kind of shows?",
+      answers: ["thai shows", "thai", "thai dramas", "thai series"]
+    },
+    {
+      question: "What piercing do I want, but my mother won't let me get?",
+      answers: ["tongue", "you want a tongue piercing", "a tongue piercing"]
+    },
+    {
+      question: "How many ex's/situationships have I had?",
       answers: ["7", "seven"]
     },
     {
       question: "Out of those ex's/Situationships who was my biggest heartbreak?",
-      answers: ["shikara", "Shikara"]
+      answers: ["shikara"]
+    },
+    {
+      question: "What is the name of the thai show we watched together for the first time",
+      answers: ["pluto", "pluto the series", "the show we watched was pluto"]
     },
     {
       question: "How many tattoos do I have?",
       answers: ["6", "6 tattoos", "you have 6 tattoos"]
-    },
-    {
-      question: "What animal do i have a phobia of?",
-      answers: ["snake", "snakes", "a snake"]
     },
     {
       question: "Have I ever been ghosted—and by whom?",
@@ -159,26 +169,31 @@ document.addEventListener("DOMContentLoaded", () => {
       answers: ["aidan"]
     },
     {
-      question: "Whenever you say your always there for me to talk about my problems, what is my response say it as if it's me",
-      answers: ["i don't want to bother you", "I'm not going to bother you", "I dont want to bother you","i dont want to disturb you", "i dont want to bother you with my problems"]
+      question: "Whenever you say you're always there for me to talk about my problems, what is my response? Say it as if it's me.",
+      answers: ["i don't want to bother you", "i'm not going to bother you", "i dont want to bother you", "i dont want to disturb you", "i dont want to bother you with my problems", "don't want to bother you"]
     },
     {
-      question: "What was the biggest thing about Shikara that I had a major problem with. Pick 1-4 and type your answer out",
-      options: "Options: 1.She wanted my full attention and time, 2.She didn't want to get to know my friends, 3.She gets upset over small things, 4.None of the above",
+      question: "What was the biggest thing about Shikara that I had a major problem with?",
+      options: "Options: She wanted my full attention and time, She didn't want to get to know my friends, She gets upset over small things, None of the above",
       answers: [
-        "She didn't want to get to know my friends",
+        "she didn't want to get to know my friends",
         "didn't want to get to know my friends",
         "she did not want to get to know my friends",
-        "not wanting to get to know my friends"
+        "not wanting to get to know my friends",
+        "she didn't want to get to know your friends"
       ]
     },
     {
       question: "What happened on the 6th of November 2025?",
-      answers: ["you got into a car crash", "car crash", "you got into a car accident", "car accident", "you were in a car crash", "you were in an accident"]
+      answers: ["i got into a car crash", "car crash", "you got into a car crash", "car accident", "you were in a car crash", "got into a car crash"]
     },
     {
-      question: "Last question, nice and easy to end off. What are you saved as in my Phone",
-      answers: ["Rope Bunny", "rope bunny", "ropebunny"]
+      question: "What was the first ever Thai GL show I watched",
+      answers: ["gap", "GAP", "gap the series"," GAP the series"]
+    },
+    {
+      question: "Last question, nice and easy to end off. What are you saved as in my Phone?",
+      answers: ["rope bunny", "ropebunny"]
     }
   ];
 
@@ -207,6 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let friendQuizIndex = 0;
   let friendQuizCorrect = 0;
   const friendQuizResponses = [];
+  let showDigDeeper = false;
 
   let inviteTime = 0;
   let scrollYBeforeQuiz = 0;
@@ -258,8 +274,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function playSlowMotion() {
     if (!friendResultAudio) return;
 
+    // Pause Sao-Paulo and save the current time
     if (music) {
-      // Don't reset music time - just pause it so we can resume later
+      saoPauloPauseTime = music.currentTime || 0;
       music.pause();
     }
 
@@ -459,11 +476,42 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderFriendQuizQuestion() {
+    // Check if we need to show the dig deeper interstitial
+    if (showDigDeeper) {
+      friendQuizProgress.textContent = "";
+      friendQuizQuestion.textContent = "";
+      friendQuizOptions.textContent = "";
+      friendQuizExtra.textContent = "";
+      friendQuizAnswer.style.display = "none";
+      friendQuizError.textContent = "";
+      friendQuizNextBtn.textContent = "Continue";
+      
+      // Create dig deeper display
+      const digDeeperDiv = document.getElementById("digDeeperText");
+      if (!digDeeperDiv) {
+        const newDiv = document.createElement("div");
+        newDiv.id = "digDeeperText";
+        newDiv.className = "dig-deeper-text";
+        newDiv.innerHTML = "Time to dig deeper into your brain, lets see how well you really know me Sister Navika-Probably really well";
+        friendQuizQuestion.parentNode.insertBefore(newDiv, friendQuizQuestion);
+      } else {
+        digDeeperDiv.style.display = "block";
+      }
+      return;
+    }
+
+    // Hide dig deeper if it exists
+    const digDeeperDiv = document.getElementById("digDeeperText");
+    if (digDeeperDiv) {
+      digDeeperDiv.style.display = "none";
+    }
+
     const item = friendQuizQuestions[friendQuizIndex];
     friendQuizProgress.textContent = `Question ${friendQuizIndex + 1} of ${friendQuizQuestions.length}`;
     friendQuizQuestion.textContent = item.question;
     friendQuizOptions.textContent = item.options || "";
     friendQuizExtra.textContent = item.extra || "";
+    friendQuizAnswer.style.display = "block";
     friendQuizAnswer.value = friendQuizResponses[friendQuizIndex] || "";
     friendQuizError.textContent = "";
     friendQuizNextBtn.textContent = friendQuizIndex === friendQuizQuestions.length - 1 ? "Finish quiz" : "Next";
@@ -491,10 +539,10 @@ document.addEventListener("DOMContentLoaded", () => {
     playSlowMotion();
     rainBlueSparks();
 
-    friendQuizScore.textContent = `You got ${friendQuizCorrect}/18 question correct!`;
+    friendQuizScore.textContent = `You got ${friendQuizCorrect}/${friendQuizQuestions.length} questions correct!`;
     friendQuizMessage.textContent =
       friendQuizCorrect > 15
-        ? "Wow Navika, well done, I'm very proud of you man, You know me so well.As we both already know"
+        ? "Wow Navika, well done, I'm very proud of you man, You know me so well. As we both already know"
         : "Damn bruh, thought we knew each other better. Nah I'm kidding. It's aight. Love u Rope Bunny";
   }
 
@@ -504,13 +552,36 @@ document.addEventListener("DOMContentLoaded", () => {
       friendResultAudio.pause();
       friendResultAudio.currentTime = 0;
     }
+    
+    // Resume Sao-Paulo from where it was paused
     document.body.classList.remove("locked");
     document.body.classList.add("scroll-mode");
-    playInviteMusic();
+    
+    if (music) {
+      const currentSrc = (music.getAttribute("src") || "").toLowerCase().replace(/-/g, '');
+      if (!currentSrc.includes("saopaulo")) {
+        music.src = "Sao-Paulo.mp3";
+        music.load();
+      }
+      try {
+        music.currentTime = saoPauloPauseTime || 0;
+      } catch (e) {}
+      music.volume = 0.7;
+      music.loop = true;
+      music.play().catch(() => {});
+    }
+    
     document.getElementById("page2")?.scrollIntoView({ behavior: "smooth" });
   }
 
   function submitFriendQuizAnswer() {
+    // Handle dig deeper interstitial
+    if (showDigDeeper) {
+      showDigDeeper = false;
+      renderFriendQuizQuestion();
+      return;
+    }
+
     const answer = friendQuizAnswer.value.trim();
 
     if (!answer) {
@@ -523,6 +594,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (answerMatches(answer, current.answers)) {
       friendQuizCorrect += 1;
+    }
+
+    // Check if we just finished question 10 (index 9) to show dig deeper
+    if (friendQuizIndex === 9) {
+      showDigDeeper = true;
+      renderFriendQuizQuestion();
+      return;
     }
 
     if (friendQuizIndex === friendQuizQuestions.length - 1) {
@@ -558,7 +636,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (document.body.classList.contains("scroll-mode")) {
-      // Resuming invite - play Sao-Paulo from where it left off
+      // Resuming invite - play Sao-Paulo from where it was paused
       if (music) {
         const currentSrc = (music.getAttribute("src") || "").toLowerCase().replace(/-/g, '');
         if (!currentSrc.includes("saopaulo")) {
@@ -566,7 +644,7 @@ document.addEventListener("DOMContentLoaded", () => {
           music.load();
         }
         try {
-          music.currentTime = inviteTime || 0;
+          music.currentTime = saoPauloPauseTime || 0;
         } catch (e) {}
         music.volume = 0.7;
         music.loop = true;
@@ -721,6 +799,14 @@ document.addEventListener("DOMContentLoaded", () => {
     friendQuizIndex = 0;
     friendQuizCorrect = 0;
     friendQuizResponses.length = 0;
+    showDigDeeper = false;
+    
+    // Remove any existing dig deeper element
+    const existingDigDeeper = document.getElementById("digDeeperText");
+    if (existingDigDeeper) {
+      existingDigDeeper.remove();
+    }
+    
     showOnlyPage("friendQuizPage");
     playSlowMotion();
     renderFriendQuizQuestion();
