@@ -125,12 +125,12 @@ document.addEventListener("DOMContentLoaded", () => {
       answers: ["don toliver", "don", "Don Toliver"]
     },
     {
-      question: "Whats our go so saying that started from a whatsapp sticker.",
-      answers: ["you hate me", "the sticker that says you hate me", "you hate me is it because I'm ugly","you hate me is it because im ugly", "You hate me, is it because im ugly"]
+      question: "Whats our go to saying that started from a whatsapp sticker.",
+      answers: ["you hate me", "the sticker that says you hate me", "you hate me is it because I'm ugly","you hate me is it because im ugly", "You hate me, is it because im ugly", "you hate me?"]
     },
     {
-      question: "What's my favorite animal",
-      answers: ["shark", "a shark", "sharks"]
+      question: "What was the first thai show you and I watched together",
+      answers: ["pluto", "pluto the series", "the series pluto"]
     },
     {
       extra: "Time to dig deeper into your brain, lets see how well you really know me Sister Navika-Probably really well",
@@ -142,8 +142,8 @@ document.addEventListener("DOMContentLoaded", () => {
       answers: ["shikara", "Shikara"]
     },
     {
-      question: "What part of my body do I not like to show? Don't think sexually,think simple.",
-      answers: ["my feet", "feet", "your feet"]
+      question: "How many tattoos do I have?",
+      answers: ["6", "6 tattoos", "you have 6 tattoos"]
     },
     {
       question: "What animal do i have a phobia of?",
