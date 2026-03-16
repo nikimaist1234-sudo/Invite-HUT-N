@@ -781,6 +781,19 @@ body.quiz-open .quiz-screen {
   margin-bottom: 12px;
 }
 
+.dig-deeper-text {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #9dc8ff;
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  padding: 20px;
+  background: rgba(157, 200, 255, 0.1);
+  border-radius: 16px;
+  border: 1px solid rgba(157, 200, 255, 0.3);
+}
+
 #neonFlood {
   position: fixed;
   inset: 0;
@@ -837,6 +850,11 @@ body.quiz-open .quiz-screen {
   .quiz-title { font-size: 22px; }
   .quiz-q { padding: 14px; }
   .quiz-q label { padding: 10px; }
+  
+  .dig-deeper-text {
+    font-size: 1.15rem;
+    padding: 16px;
+  }
 }
 
 @media (max-width: 480px) {
