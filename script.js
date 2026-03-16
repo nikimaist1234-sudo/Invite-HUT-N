@@ -243,8 +243,9 @@ document.addEventListener("DOMContentLoaded", () => {
       resultAudio.currentTime = 0;
     }
 
-    const currentSrc = (music.getAttribute("src") || "").toLowerCase();
-    if (currentSrc !== "Sao-Paulo.mp3") {
+    // Check if Sao-Paulo is already playing, if not set it
+    const currentSrc = (music.getAttribute("src") || "").toLowerCase().replace(/-/g, '');
+    if (!currentSrc.includes("saopaulo")) {
       music.src = "Sao-Paulo.mp3";
       music.load();
     }
@@ -254,10 +255,11 @@ document.addEventListener("DOMContentLoaded", () => {
     music.play().catch(() => {});
   }
 
-  function playWhistle() {
+  function playSlowMotion() {
     if (!friendResultAudio) return;
 
     if (music) {
+      // Don't reset music time - just pause it so we can resume later
       music.pause();
     }
 
@@ -266,8 +268,8 @@ document.addEventListener("DOMContentLoaded", () => {
       resultAudio.currentTime = 0;
     }
 
-    const currentSrc = (friendResultAudio.getAttribute("src") || "").toLowerCase();
-    if (currentSrc !== "Slow-Motion.mp3") {
+    const currentSrc = (friendResultAudio.getAttribute("src") || "").toLowerCase().replace(/-/g, '');
+    if (!currentSrc.includes("slowmotion")) {
       friendResultAudio.src = "Slow-Motion.mp3";
       friendResultAudio.load();
     }
@@ -280,7 +282,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function stopWhistle() {
+  function stopSlowMotion() {
     if (!friendResultAudio) return;
     friendResultAudio.pause();
     friendResultAudio.currentTime = 0;
@@ -394,7 +396,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function goToNextLyricsLevel() {
     if (lyricsIndex >= lyricsLevels.length - 1) {
       showOnlyPage("pageA");
-      playWhistle();
+      playSlowMotion();
       return;
     }
     loadLyricsLevel(lyricsIndex + 1);
@@ -486,18 +488,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function showFriendQuizResults() {
     showOnlyPage("friendQuizResults");
-    playWhistle();
+    playSlowMotion();
     rainBlueSparks();
 
     friendQuizScore.textContent = `You got ${friendQuizCorrect}/18 question correct!`;
     friendQuizMessage.textContent =
       friendQuizCorrect > 15
-        ? "Wow Ethan, well done, I'm very proud of you man, You know me so well"
-        : "Damn bruh, thought we knew each other better. Nah I'm kidding. It's aight. Love u Bala Boi";
+        ? "Wow Navika, well done, I'm very proud of you man, You know me so well.As we both already know"
+        : "Damn bruh, thought we knew each other better. Nah I'm kidding. It's aight. Love u Rope Bunny";
   }
 
   function unlockInvite() {
-    stopWhistle();
+    // Stop the quiz music (Slow-Motion)
+    if (friendResultAudio) {
+      friendResultAudio.pause();
+      friendResultAudio.currentTime = 0;
+    }
     document.body.classList.remove("locked");
     document.body.classList.add("scroll-mode");
     playInviteMusic();
@@ -542,13 +548,23 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function exitQuizAudioMode() {
-    stopResultAudio();
-    pauseAllAudio();
+    if (friendResultAudio) {
+      friendResultAudio.pause();
+      friendResultAudio.currentTime = 0;
+    }
+    if (resultAudio) {
+      resultAudio.pause();
+      resultAudio.currentTime = 0;
+    }
 
     if (document.body.classList.contains("scroll-mode")) {
+      // Resuming invite - play Sao-Paulo from where it left off
       if (music) {
-        music.src = "timeless.mp3";
-        music.load();
+        const currentSrc = (music.getAttribute("src") || "").toLowerCase().replace(/-/g, '');
+        if (!currentSrc.includes("saopaulo")) {
+          music.src = "Sao-Paulo.mp3";
+          music.load();
+        }
         try {
           music.currentTime = inviteTime || 0;
         } catch (e) {}
@@ -557,7 +573,8 @@ document.addEventListener("DOMContentLoaded", () => {
         music.play().catch(() => {});
       }
     } else {
-      playWhistle();
+      // Still in quiz mode
+      playSlowMotion();
     }
   }
 
@@ -682,6 +699,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   startBtn?.addEventListener("click", () => {
     showOnlyPage("page1");
+    // Reset music to start fresh on page 1
+    if (music) {
+      music.src = "Sao-Paulo.mp3";
+      music.load();
+    }
     playInviteMusic();
     loadLyricsLevel(0);
   });
@@ -700,7 +722,7 @@ document.addEventListener("DOMContentLoaded", () => {
     friendQuizCorrect = 0;
     friendQuizResponses.length = 0;
     showOnlyPage("friendQuizPage");
-    playWhistle();
+    playSlowMotion();
     renderFriendQuizQuestion();
   });
 
