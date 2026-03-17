@@ -46,8 +46,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const resultAudio = document.getElementById("resultAudio");
   const quizNameInput = document.getElementById("quizName");
 
-  // Variable to store Sao-Paulo.mp3 pause time
-  let saoPauloPauseTime = 0;
+  // Variable to store the-abyss.mp3 pause time for resuming later
+  let theAbyssPauseTime = 0;
 
   // Lyrics game levels - 8 levels with Weeknd lyrics
   const lyricsLevels = [
@@ -197,18 +197,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   ];
 
-  const SONG_KEYS = ["cry-for-me", "nigara-falls", "the-abyss", "timeless", "wake-me-up"];
+  // Updated SONG_KEYS - replaced "the-abyss" with "sao-paulo"
+  const SONG_KEYS = ["cry-for-me", "nigara-falls", "sao-paulo", "timeless", "wake-me-up"];
   const SONG_PRETTY = {
     "cry-for-me": "Cry For Me",
     "nigara-falls": "Nigara Falls",
-    "the-abyss": "The Abyss",
+    "sao-paulo": "Sao Paulo",
     "timeless": "Timeless",
     "wake-me-up": "Wake Me Up"
   };
   const SONG_BLURB = {
     "cry-for-me": "You're soft-hearted, dramatic in the best way, and you feel everything properly.",
     "nigara-falls": "You're calm, pretty, and easy to be around. Quiet vibe, strong presence.",
-    "the-abyss": "You're mysterious, deep, and a little hard to read, which makes people more curious.",
+    "sao-paulo": "You're mysterious, deep, and a little hard to read, which makes people more curious.",
     "timeless": "You carry yourself like a star. Confident, cool, and impossible to ignore.",
     "wake-me-up": "You bring energy, warmth, and life into every room you walk into."
   };
@@ -224,7 +225,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const friendQuizResponses = [];
   let showDigDeeper = false;
 
-  let inviteTime = 0;
   let scrollYBeforeQuiz = 0;
 
   function blurActiveField() {
@@ -246,9 +246,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function playInviteMusic() {
+  // Play the-abyss.mp3 for page 1 (lyrics game)
+  function playTheAbyss() {
     if (!music) return;
 
+    // Stop any other audio first
     if (friendResultAudio) {
       friendResultAudio.pause();
       friendResultAudio.currentTime = 0;
@@ -259,10 +261,10 @@ document.addEventListener("DOMContentLoaded", () => {
       resultAudio.currentTime = 0;
     }
 
-    // Check if Sao-Paulo is already playing, if not set it
+    // Set the-abyss.mp3 as the source
     const currentSrc = (music.getAttribute("src") || "").toLowerCase().replace(/-/g, '');
-    if (!currentSrc.includes("saopaulo")) {
-      music.src = "Sao-Paulo.mp3";
+    if (!currentSrc.includes("theabyss")) {
+      music.src = "the-abyss.mp3";
       music.load();
     }
 
@@ -271,12 +273,14 @@ document.addEventListener("DOMContentLoaded", () => {
     music.play().catch(() => {});
   }
 
+  // Play Slow-Motion.mp3 for the "How well do you know me" quiz
+  // This pauses the-abyss where it is and saves the timestamp
   function playSlowMotion() {
     if (!friendResultAudio) return;
 
-    // Pause Sao-Paulo and save the current time
+    // Pause the-abyss and save the current time
     if (music) {
-      saoPauloPauseTime = music.currentTime || 0;
+      theAbyssPauseTime = music.currentTime || 0;
       music.pause();
     }
 
@@ -285,6 +289,7 @@ document.addEventListener("DOMContentLoaded", () => {
       resultAudio.currentTime = 0;
     }
 
+    // Use Slow-Motion.mp3 for the friend quiz
     const currentSrc = (friendResultAudio.getAttribute("src") || "").toLowerCase().replace(/-/g, '');
     if (!currentSrc.includes("slowmotion")) {
       friendResultAudio.src = "Slow-Motion.mp3";
@@ -413,6 +418,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function goToNextLyricsLevel() {
     if (lyricsIndex >= lyricsLevels.length - 1) {
       showOnlyPage("pageA");
+      // Start Slow-Motion for the friend quiz intro
       playSlowMotion();
       return;
     }
@@ -535,7 +541,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function showFriendQuizResults() {
     showOnlyPage("friendQuizResults");
-    playSlowMotion();
+    // Slow-Motion continues playing for results page
     rainBlueSparks();
 
     friendQuizScore.textContent = `You got ${friendQuizCorrect}/${friendQuizQuestions.length} questions correct!`;
@@ -546,24 +552,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function unlockInvite() {
-    // Stop the quiz music (Slow-Motion)
-    if (friendResultAudio) {
-      friendResultAudio.pause();
-      friendResultAudio.currentTime = 0;
-    }
+    // Stop Slow-Motion quiz music
+    stopSlowMotion();
     
-    // Resume Sao-Paulo from where it was paused
+    // Resume the-abyss from where it was paused
     document.body.classList.remove("locked");
     document.body.classList.add("scroll-mode");
     
     if (music) {
       const currentSrc = (music.getAttribute("src") || "").toLowerCase().replace(/-/g, '');
-      if (!currentSrc.includes("saopaulo")) {
-        music.src = "Sao-Paulo.mp3";
+      if (!currentSrc.includes("theabyss")) {
+        music.src = "the-abyss.mp3";
         music.load();
       }
       try {
-        music.currentTime = saoPauloPauseTime || 0;
+        music.currentTime = theAbyssPauseTime || 0;
       } catch (e) {}
       music.volume = 0.7;
       music.loop = true;
@@ -622,37 +625,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function enterQuizAudioMode() {
     stopResultAudio();
-    inviteTime = music ? (music.currentTime || 0) : 0;
+    // Save current the-abyss time before pausing
+    if (music && !music.paused) {
+      theAbyssPauseTime = music.currentTime || 0;
+    }
     pauseAllAudio();
   }
 
   function exitQuizAudioMode() {
+    stopResultAudio();
+    
     if (friendResultAudio) {
       friendResultAudio.pause();
       friendResultAudio.currentTime = 0;
     }
-    if (resultAudio) {
-      resultAudio.pause();
-      resultAudio.currentTime = 0;
-    }
 
     if (document.body.classList.contains("scroll-mode")) {
-      // Resuming invite - play Sao-Paulo from where it was paused
+      // Resuming invite - play the-abyss from where it was paused
       if (music) {
         const currentSrc = (music.getAttribute("src") || "").toLowerCase().replace(/-/g, '');
-        if (!currentSrc.includes("saopaulo")) {
-          music.src = "Sao-Paulo.mp3";
+        if (!currentSrc.includes("theabyss")) {
+          music.src = "the-abyss.mp3";
           music.load();
         }
         try {
-          music.currentTime = saoPauloPauseTime || 0;
+          music.currentTime = theAbyssPauseTime || 0;
         } catch (e) {}
         music.volume = 0.7;
         music.loop = true;
         music.play().catch(() => {});
       }
     } else {
-      // Still in quiz mode
+      // Still in quiz mode - play Slow-Motion
       playSlowMotion();
     }
   }
@@ -778,12 +782,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   startBtn?.addEventListener("click", () => {
     showOnlyPage("page1");
-    // Reset music to start fresh on page 1
+    // Start with the-abyss.mp3
     if (music) {
-      music.src = "Sao-Paulo.mp3";
+      music.src = "the-abyss.mp3";
       music.load();
     }
-    playInviteMusic();
+    playTheAbyss();
     loadLyricsLevel(0);
   });
 
@@ -809,7 +813,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     showOnlyPage("friendQuizPage");
-    playSlowMotion();
+    // Slow-Motion is already playing from goToNextLyricsLevel, keep it playing
     renderFriendQuizQuestion();
   });
 
