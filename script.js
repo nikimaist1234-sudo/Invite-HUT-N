@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       question: "What big collection do I have displayed in my room on my shelf?",
-      answers: ["energy drink collection", "energy drinks", "energy drink", "my energy drink collection", "energy drinks collection"]
+      answers: ["energy drink collection", "energy drinks", "energy drink", "you energy drink collection", "energy drinks collection", "can collection", "can", "drink collection", "switch can collection"]
     },
     {
       question: "Which member of Blackpink is my bias?",
@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       question: "Have I ever been ghosted—and by whom?",
-      answers: ["tiara"]
+      answers: ["tiara", "Tiara"]
     },
     {
       question: "Who was the first person I ever kissed?",
@@ -173,8 +173,8 @@ document.addEventListener("DOMContentLoaded", () => {
       answers: ["i don't want to bother you", "i'm not going to bother you", "i dont want to bother you", "i dont want to disturb you", "i dont want to bother you with my problems", "don't want to bother you"]
     },
     {
-      question: "What was the biggest thing about Shikara that I had a major problem with?",
-      options: "Options: She wanted my full attention and time, She didn't want to get to know my friends, She gets upset over small things, None of the above",
+      question: "What was the biggest thing about Shikara that I had a major problem with? Pick 1-4 and type your answer out.",
+      options: "Options: 1.She wanted my full attention and time, 2.She didn't want to get to know my friends, 3.She gets upset over small things, 4.None of the above",
       answers: [
         "she didn't want to get to know my friends",
         "didn't want to get to know my friends",
@@ -185,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       question: "What happened on the 6th of November 2025?",
-      answers: ["i got into a car crash", "car crash", "you got into a car crash", "car accident", "you were in a car crash", "got into a car crash"]
+      answers: ["i got into a car crash", "car crash", "you got into a car crash", "car accident", "you were in a car crash", "got into a car crash","you got into a car accident", "you were in a car accident"]
     },
     {
       question: "What was the first ever Thai GL show I watched",
@@ -202,14 +202,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const SONG_PRETTY = {
     "cry-for-me": "Cry For Me",
     "nigara-falls": "Nigara Falls",
-    "sao-paulo": "Sao Paulo",
+    "Sao-Paulo": "Sao Paulo",
     "timeless": "Timeless",
     "wake-me-up": "Wake Me Up"
   };
   const SONG_BLURB = {
     "cry-for-me": "You're soft-hearted, dramatic in the best way, and you feel everything properly.",
     "nigara-falls": "You're calm, pretty, and easy to be around. Quiet vibe, strong presence.",
-    "sao-paulo": "You're mysterious, deep, and a little hard to read, which makes people more curious.",
+    "Sao-Paulo": "You're mysterious, deep, and a little hard to read, which makes people more curious.",
     "timeless": "You carry yourself like a star. Confident, cool, and impossible to ignore.",
     "wake-me-up": "You bring energy, warmth, and life into every room you walk into."
   };
